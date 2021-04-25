@@ -1,1 +1,1 @@
-worker nodejs vkbot.js
+worker: node vkbot.js
