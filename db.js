@@ -1,7 +1,7 @@
-function db_get_collection(collection, skip=0, limit=3) {
+function db_get_collection(collection, sort, skip=0, limit=3) {
     return new Promise((resolve, reject) => {
         collection.find()
-        .sort()
+        .sort(sort)
         .skip(skip)
         .limit(limit)
         .toArray(function (err, results) {
@@ -18,9 +18,9 @@ function db_get_random(collection) {
     });
 };
 
-function db_add(collection, additions) {
+function db_add(collection, addition) {
     return new Promise((resolve, reject) => {
-        collection.insertMany(additions);
+        collection.insertOne(addition);
     });
 };
 
