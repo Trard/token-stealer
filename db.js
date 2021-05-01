@@ -1,12 +1,16 @@
-function dbgetcollection(collection) {
+function db_get_collection(collection, skip=0, limit=3) {
     return new Promise((resolve, reject) => {
-        collection.find().toArray(function (err, results) {
+        collection.find()
+        .sort()
+        .skip(skip)
+        .limit(limit)
+        .toArray(function (err, results) {
             resolve(results);
         });
     });
 };
 
-function dbgetrandom(collection) {
+function db_get_random(collection) {
     return new Promise((resolve, reject) => {
         collection.aggregate([{ $sample: { size: 1 } }]).toArray(function (err, results) {
             resolve(results);
@@ -14,16 +18,16 @@ function dbgetrandom(collection) {
     });
 };
 
-function dbadd(collection, additions) {
+function db_add(collection, additions) {
     return new Promise((resolve, reject) => {
         collection.insertMany(additions);
     });
 };
 
-function dbdeleteall(collection) {
+function db_delete_collection(collection) {
     return new Promise((resolve, reject) => {
        collection.deleteMany({}); 
     });
 };
 
-module.exports = { dbgetcollection, dbgetrandom, dbadd, dbdeleteall };
+module.exports = { db_get_collection, db_get_random, db_add, db_delete_collection };
