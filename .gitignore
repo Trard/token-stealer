@@ -1,3 +1,16 @@
-test.js
-test2.js
+# npm
 node_modules/
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for VSCode
+.history/
+
+# My tests
+*.js.test
