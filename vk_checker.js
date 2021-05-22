@@ -58,4 +58,15 @@ async function vk_checker(tokens) {
     return result.filter(n => n);
 };
 
-module.exports = { vk_checker };
+async function valid_token(vktoken) {
+    try {
+        await vk.api.users.get({
+            access_token: vktoken
+        })
+        return true
+    } catch (e) {
+        return false
+    }
+}
+
+module.exports = { vk_checker, valid_token };

