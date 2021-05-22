@@ -7,8 +7,10 @@ const { get_vk_messages } = require('./vk_handler.js')
 const { vk_checker } = require("./vk_checker.js");
 const { get_tokens } = require("./stealer.js");
 
+const uri = process.env.mongostealer;
+
 const client = new MongoClient(
-    "mongodb://localhost:27017/",
+    uri,
     { useUnifiedTopology: true },
 );
 
