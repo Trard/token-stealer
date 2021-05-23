@@ -4,6 +4,10 @@ const octokit = new Octokit({
     auth: process.env.gittoken
 });
 
+function unique(arr) {
+    return Array.from(new Set(arr));
+}
+
 async function get_searches(search_string) {
     let searches = await octokit.rest.search.code({
         q: search_string,
@@ -38,7 +42,8 @@ async function get_tokens(search_string, regexp) {
     });
 
     let tokens = await Promise.all(promises);
-    return tokens.filter(n => n);
+    let res = unique(tokens.filter(n => n))
+    return res;
 }
 
 module.exports = { get_tokens };
