@@ -13,4 +13,4 @@ node_modules/
 .history/
 
 # My tests
-*.js.test
+*.test.js
