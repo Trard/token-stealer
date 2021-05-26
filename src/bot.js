@@ -21,14 +21,17 @@ const hearManager = new HearManager();
 client.connect(async function(err, client) {
 
     const db = client.db("stealer")
-    const users = db.collecton("users");
+    const users = db.collection("users");
     const groups = db.collection("groups");
     const logs = db.collection("logs")
     
     vk.updates.on('message_new', (context, next) => {
         const { messagePayload } = context;
+        
+        let log = JSON.parse(JSON.stringify(context)) //mega poop
+        log.expireAfterSeconds = 60 * 60 * 24 * 30 //30 days
 
-        db_add(logs, context)
+        db_add(logs, log)
 
         if (messagePayload && messagePayload.command && messagePayload.arg) {
             context.state.command = messagePayload.command
