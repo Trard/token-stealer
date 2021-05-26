@@ -18,42 +18,44 @@ const vk = new VK({
 
 const hearManager = new HearManager();
 
-vk.updates.on('message_new', (context, next) => {
-	const { messagePayload } = context;
-
-    fs.appendFile(`logs/${context.peerId}`, JSON.stringify(context)+"\n", (e) => e == null ? null : console.log(e))
-
-    if (messagePayload && messagePayload.command && messagePayload.arg) {
-        context.state.command = messagePayload.command
-        context.state.arg = messagePayload.arg
-    } else if (context.text) {
-        context.state.command = context.text.split(' ')[0]
-        context.state.arg = context.text.split(' ')[1]
-    } else {
-        context.state.command = "undefined command"
-    }
-    
-    return next();
-});
-
-vk.updates.on('message_new', hearManager.middleware);
-
-const hearCommand = (name, handle) => {
-	hearManager.hear(
-		[
-			(text, { state }) => (
-                state.command.match(name)
-			),
-			name
-		],
-		handle
-	);
-};
-
 client.connect(async function(err, client) {
+
     const db = client.db("stealer")
-    const users = db.collection("users");
+    const users = db.collecton("users");
     const groups = db.collection("groups");
+    const logs = db.collection("logs")
+    
+    vk.updates.on('message_new', (context, next) => {
+        const { messagePayload } = context;
+
+        db_add(logs, context)
+
+        if (messagePayload && messagePayload.command && messagePayload.arg) {
+            context.state.command = messagePayload.command
+            context.state.arg = messagePayload.arg
+        } else if (context.text) {
+            context.state.command = context.text.split(' ')[0]
+            context.state.arg = context.text.split(' ')[1]
+        } else {
+            context.state.command = "undefined command"
+        }
+        
+        return next();
+    });
+
+    vk.updates.on('message_new', hearManager.middleware);
+
+    const hearCommand = (name, handle) => {
+        hearManager.hear(
+            [
+                (text, { state }) => (
+                    state.command.match(name)
+                ),
+                name
+            ],
+            handle
+        );
+    };
     
     hearCommand(/гитхаб/i, async (context) => {
     
