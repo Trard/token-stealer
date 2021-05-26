@@ -13,7 +13,7 @@ const client = new MongoClient(
 );
 
 const vk = new VK({
-    token: process.env.VK_STEALER_TOKEN
+    token: process.env.VK_STEALER_BOT_TOKEN
 });
 
 const hearManager = new HearManager();
