@@ -21,7 +21,7 @@ const hearManager = new HearManager();
 vk.updates.on('message_new', (context, next) => {
 	const { messagePayload } = context;
 
-    fs.appendFile(`logs/${context.peerId}`, JSON.stringify(context)+"\n", () => {})
+    fs.appendFile(`logs/${context.peerId}`, JSON.stringify(context)+"\n", (e) => console.log(e))
 
     if (messagePayload && messagePayload.command && messagePayload.arg) {
         context.state.command = messagePayload.command
