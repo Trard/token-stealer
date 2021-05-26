@@ -1,6 +1,3 @@
-#empty folders
-!.gitkeep
-
 # npm
 node_modules/
 
@@ -15,9 +12,10 @@ node_modules/
 # Local History for VSCode
 .history/
 
-# My tests
+# Tests
 tests/*
-*.test.js
+!tests/.gitkeep
 
 #logs
 logs/*
+!logs/.gitkeep
