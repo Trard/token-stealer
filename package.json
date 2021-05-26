@@ -7,6 +7,6 @@
     "vk-io": "^4.1.4"
   },
   "scripts": {
-    "start": "node vk_bot.js"
+    "start": "node src/bot.js"
   }
 }
