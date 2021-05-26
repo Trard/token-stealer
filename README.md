@@ -12,8 +12,8 @@ git clone https://github.com/Trard/stealer.git
 
 - **Add environment variables:**
     - gittoken="token from github"
-    - mongostealer="token from mongodb"
     - vktoken="token from vk group bot"
+    - mongostealer="link mongodb"
 
 **Install dependencies:**
 ```
