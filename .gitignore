@@ -13,9 +13,8 @@ node_modules/
 .history/
 
 # Tests
-tests/*
-!tests/.gitkeep
+*.test.js
 
-#logs
+# Logs
 logs/*
 !logs/.gitkeep
