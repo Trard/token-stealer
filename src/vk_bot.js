@@ -1,8 +1,8 @@
 const { VK, Keyboard } = require('vk-io');
 const { HearManager } = require('@vk-io/hear');
 const MongoClient = require("mongodb").MongoClient;
-const { db_get_collection, db_add, db_available_value, db_delete_value } = require("./updater.js")
-const { get_vk_messages } = require('./handler.js')
+const { db_get_collection, db_add, db_available_value, db_delete_value } = require("./db/updater.js")
+const { get_vk_messages } = require('./bot/handler.js')
 
 const client = new MongoClient(
     process.env.MONGO_STEALER_LINK,

