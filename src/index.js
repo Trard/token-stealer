@@ -20,7 +20,7 @@ const main = async () => {
         },
         1000 * 60 * 30 //30 min
     );
-    start_bot();
+    start_bot(accounts);
 }
 
 main();
