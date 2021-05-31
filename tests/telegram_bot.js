@@ -12,7 +12,7 @@ const main = async () => {
     const db = client.db("stealer");
     let accounts = db.collection("accounts");
 
-    start_bot(accounts)
+    start_bot(accounts);
 }
 
-main()
+main();

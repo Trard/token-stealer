@@ -9,7 +9,7 @@ Token: \`\`\`${check.token}\`\`\`
 `
                 break;
             case "group":
-                let perms = await check.perms.permissions.map(perm => perm.name).join(", ")
+                let perms = await check.perms.permissions.map(perm => perm.name).join(", ");
                 final_string =
 `[${check.account.name}](vk.com/club${check.account.id}) - ${check.account.is_closed === 0 ? "opened" : "closed"} group
 Members count: ${check.members}
@@ -24,4 +24,4 @@ Token: \`\`\`${check.token}\`\`\`
         return Promise.all(promises);
 }
 
-module.exports = { get_messages }
+module.exports = { get_messages };

@@ -1,5 +1,5 @@
 const { db_administration } = require('./db/updater');
-const { start_bot } = require('./bot/bot.js')
+const { start_bot } = require('./bot/bot.js');
 const MongoClient = require("mongodb").MongoClient;
 
 const client = new MongoClient(
@@ -12,14 +12,14 @@ const main = async () => {
 
     const db = client.db("stealer");
     let accounts = db.collection("accounts");
-
+    
     setInterval(
         () => {
-            db_administration(accounts)
+            db_administration(accounts);
         },
         1000 * 60 * 30 //30 min
     );
-    start_bot()
+    start_bot();
 }
 
-main()
+main();

@@ -1,7 +1,7 @@
 const { client, db_administration } = require("../src/updater.js");
 
 const main = async () => {
-    await client.connect()
+    await client.connect();
 
     const db = client.db("stealer");
     let accounts = db.collection("accounts");
@@ -14,4 +14,4 @@ const main = async () => {
     );
 }
 
-main()
+main();

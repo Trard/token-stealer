@@ -9,29 +9,29 @@ const db_update = async (collection) => {
 
     await Promise.all(new_accounts.map(async (account) => {
         if ((await collection.find( {token: account.token} ).toArray()).length === 0) {
-            add_accounts.push(account)
+            add_accounts.push(account);
         }
     }))
     
-    await collection.insertMany(add_accounts)
+    await collection.insertMany(add_accounts);
 };
 
 const db_clear = async (collection) => {
-    let accounts = await collection.find().toArray()
+    let accounts = await collection.find().toArray();
     let del_ids = [];
 
     await Promise.all(accounts.map(async (account) => {
         if (!await valid_token(account.token)) {
-            del_ids.push(ObjectId(account._id))
+            del_ids.push(ObjectId(account._id));
         }
     }));
 
-    await collection.deleteMany( { "_id": { $in: del_ids } } )
+    await collection.deleteMany( { "_id": { $in: del_ids } } );
 }
 
 const db_administration = async (collection) => {
-    db_update(collection).then(console.log("update db"))
-    db_clear(collection).then(console.log("clear db"))
+    db_update(collection).then(console.log("update db"));
+    db_clear(collection).then(console.log("clear db"));
 }
 
-module.exports = { db_administration }
+module.exports = { db_administration };

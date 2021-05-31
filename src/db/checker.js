@@ -21,7 +21,7 @@ async function get_members(vktoken, id) {
 async function vk_checker_group(vktoken) {
     let base = vk.api.groups.getById({
         access_token: vktoken
-    })
+    });
 
     let perms = vk.api.groups.getTokenPermissions({
         access_token: vktoken
@@ -36,13 +36,13 @@ async function vk_checker(tokens) {
         try {
             let account = await vk_checker_user(token);
             if (account.length > 0) {
-                let result = {account: account[0]}
+                let result = {account: account[0]};
                 result.token = token;
                 result.type = "user";
                 return result;
             } else {
                 let account = await vk_checker_group(token);
-                let group_members = await get_members(token, account[0][0].id)
+                let group_members = await get_members(token, account[0][0].id);
                 let result = {
                     account: account[0][0],
                     perms: account[1],
@@ -62,10 +62,10 @@ async function valid_token(vktoken) {
     try {
         await vk.api.users.get({
             access_token: vktoken
-        })
-        return true
+        });
+        return true;
     } catch (e) {
-        return false
+        return false;
     }
 }
 

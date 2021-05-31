@@ -8,16 +8,16 @@ const start_bot = (collection) => {
     //handler
     bot.use(async (ctx, next) => {
         if (ctx.update.callback_query) {
-            await ctx.answerCbQuery()
+            await ctx.answerCbQuery();
             try {
                 ctx.state = JSON.parse(ctx.callbackQuery.data);
-                ctx.callbackQuery.data = ctx.state.command
+                ctx.callbackQuery.data = ctx.state.command;
             } catch (e) {
-                console.log(e)
+                console.log(e);
                 return;
             }
         }
-        await next()
+        await next();
     })
 
     bot.start((ctx) => {
@@ -45,12 +45,12 @@ const start_bot = (collection) => {
 
     bot.action("get_page", async (ctx) => {
         let page_size = 3;
-        let last_element = await collection.countDocuments( { type: ctx.state.type } )
+        let last_element = await collection.countDocuments( { type: ctx.state.type } );
 
         if ( ctx.state.element === "last") {
-            ctx.state.element = last_element - page_size
+            ctx.state.element = last_element - page_size;
         } else if (ctx.state.element < 0) {
-            ctx.state.element = 0
+            ctx.state.element = 0;
         }
 
         if (ctx.state.element >= 0 && ctx.state.element < last_element) {
@@ -61,7 +61,7 @@ const start_bot = (collection) => {
                 .limit(page_size)
                 .toArray()
 
-            let message = ( await get_messages(accounts) ).join('\n')
+            let message = ( await get_messages(accounts) ).join('\n');
             try {
                 await ctx.editMessageText(
                     message, {
@@ -74,11 +74,11 @@ const start_bot = (collection) => {
         }
     })
 
-    bot.launch()
+    bot.launch();
 
     // Enable graceful stop
-    process.once('SIGINT', () => bot.stop('SIGINT'))
-    process.once('SIGTERM', () => bot.stop('SIGTERM'))
+    process.once('SIGINT', () => bot.stop('SIGINT'));
+    process.once('SIGTERM', () => bot.stop('SIGTERM'));
 }
 
 module.exports = { start_bot }
