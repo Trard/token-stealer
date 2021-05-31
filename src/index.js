@@ -12,7 +12,8 @@ const main = async () => {
 
     const db = client.db("stealer");
     let accounts = db.collection("accounts");
-    
+
+    db_administration(accounts) //first run
     setInterval(
         () => {
             db_administration(accounts);
