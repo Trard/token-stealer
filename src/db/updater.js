@@ -26,7 +26,7 @@ const db_clear = async (collection) => {
         }
     }));
 
-    await collection.deleteMany( {"_id": { $in: del_ids}} )
+    await collection.deleteMany( { "_id": { $in: del_ids } } )
 }
 
 const db_administration = async (collection) => {
