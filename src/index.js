@@ -1,4 +1,5 @@
 const { db_administration } = require('./db/updater');
+const { start_bot } = require('./bot/bot.js')
 const MongoClient = require("mongodb").MongoClient;
 
 const client = new MongoClient(
@@ -18,6 +19,7 @@ const main = async () => {
         },
         1000 * 60 * 30 //30 min
     );
+    start_bot()
 }
 
 main()

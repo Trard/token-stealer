@@ -1,4 +1,3 @@
-'use strict'
 const { Telegraf, Markup } = require('telegraf')
 const { get_messages } = require('./handler.js')
 const { pagination, groups_or_users } = require('./keyboards.js')
