@@ -1,6 +1,7 @@
 # Stealer
 
 **The bot is presented for informational purposes only**
+
 Bot to steal tokens from github
 
 ## Installation
