@@ -1,21 +1,26 @@
 const { Telegraf, Markup } = require('telegraf')
+
 const { get_messages } = require('./handler.js')
 const { pagination, groups_or_users } = require('./keyboards.js')
 
-const bot = new Telegraf(process.env.STEALER_TELEGRAM_TOKEN)
-
-const start_bot = (collection) => {
+const start_bot = (db, page_size) => {
+    //consts
+    const bot = new Telegraf(process.env.STEALER_TELEGRAM_TEST_TOKEN);
+    const accounts = db.collection("accounts");
+    const logs = db.collection("logs");
     //handler
     bot.use(async (ctx, next) => {
-        if (ctx.update.callback_query) {
-            await ctx.answerCbQuery();
-            try {
-                ctx.state = JSON.parse(ctx.callbackQuery.data);
-                ctx.callbackQuery.data = ctx.state.command;
-            } catch (e) {
-                console.log(e);
-                return;
+        logs.insertOne(ctx.update);
+        try {
+            if (ctx.update.callback_query) {
+                await ctx.answerCbQuery();
+                ctx.state.data = JSON.parse(ctx.callbackQuery.data); // moving data
+                ctx.callbackQuery.data = ctx.state.data.command; // add command
+                ctx.state.message_id = ctx.update.callback_query.message.message_id
             }
+        } catch (e) {
+            console.log(e);
+            return;
         }
         await next();
     })
@@ -44,33 +49,32 @@ const start_bot = (collection) => {
     })
 
     bot.action("get_page", async (ctx) => {
-        let page_size = 3;
-        let last_element = await collection.countDocuments( { type: ctx.state.type } );
+        
+        let data = ctx.state.data
+        let last_element = await accounts.countDocuments( { type: data.type } );
 
-        if ( ctx.state.element === "last") {
-            ctx.state.element = last_element - page_size;
-        } else if (ctx.state.element < 0) {
-            ctx.state.element = 0;
+        if ( data.element === "last") {
+            data.element = last_element - page_size;
+        } else if (data.element < 0) {
+            data.element = 0;
         }
 
-        if (ctx.state.element >= 0 && ctx.state.element < last_element) {
-            let accounts = await collection
-                .find( { type: ctx.state.type } )
+        if (data.element >= 0 && data.element < last_element) {
+            let page_accounts = await accounts
+                .find( { type: data.type } )
                 .sort( { members: -1, _id: 1 } )
-                .skip(ctx.state.element)
+                .skip(data.element)
                 .limit(page_size)
                 .toArray()
+            let message = ( await get_messages(page_accounts) ).join('\n');
 
-            let message = ( await get_messages(accounts) ).join('\n');
-            try {
-                await ctx.editMessageText(
-                    message, {
-                        parse_mode: 'Markdown',
-                        disable_web_page_preview: true,
-                        ...pagination(ctx.state.element, page_size, ctx.state.type),
-                    }
-                )
-            } catch {}
+            await ctx.editMessageText(
+                message, {
+                    parse_mode: 'Markdown',
+                    disable_web_page_preview: true,
+                    ...pagination(data.element, page_size, data.type),
+                }
+            )
         }
     })
 

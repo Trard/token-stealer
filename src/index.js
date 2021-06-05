@@ -10,6 +10,8 @@ const client = new MongoClient(
 const main = async () => {
     await client.connect();
 
+    const page_size = 3;
+
     const db = client.db("stealer");
     let accounts = db.collection("accounts");
 
@@ -20,7 +22,7 @@ const main = async () => {
         },
         1000 * 60 * 30 //30 min
     );
-    start_bot(accounts);
+    start_bot(db, page_size);
 }
 
 main();
