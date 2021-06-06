@@ -5,8 +5,9 @@
 Bot to steal tokens from github
 
 ## Installation
-> **[Node.js](https://nodejs.org/) 12.0.0 or newer is required**
- 
+> **[Node.js](https://nodejs.org/) is required**
+> **[Redis](https://redis.io/) is required**
+
 **Clon the bot:**
 ```
 git clone https://github.com/Trard/stealer.git
