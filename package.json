@@ -9,6 +9,6 @@
     "vk-io": "^4.1.4"
   },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node --unhandled-rejections=strict src/index.js"
   }
 }
