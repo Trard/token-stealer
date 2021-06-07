@@ -12,8 +12,10 @@ const db_update = async (collection) => {
             add_accounts.push(account);
         }
     }))
-    
-    await collection.insertMany(add_accounts);
+
+    if (add_accounts.length !== 0) {
+        await collection.insertMany(add_accounts);
+    }
 };
 
 const db_clear = async (collection) => {
@@ -26,8 +28,11 @@ const db_clear = async (collection) => {
         }
     }));
 
-    await collection.deleteMany( { "_id": { $in: del_ids } } );
+    if (del_ids.length !== 0) {
+        await collection.deleteMany( { "_id": { $in: del_ids } } );
+    }
 }
+
 
 const db_administration = async (collection) => {
     db_update(collection).then(console.log("update db"));
