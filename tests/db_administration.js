@@ -10,7 +10,7 @@ const main = async () => {
     await client.connect();
 
     const db = client.db("stealer");
-    let accounts = db.collection("accounts");
+    let accounts = db.collection("accounts1");
 
     db_administration(accounts)
 }

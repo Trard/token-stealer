@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const { decodeBitMask, perms } = require('vk-bit-masks-decoder')
 
 const get_params = (body) => {
     let data = [];
@@ -67,7 +68,7 @@ const get_accounts = async (tokens) => {
             let check = await get_base(token);
             switch (check.type) {
                 case "user": {
-                    let perms = await fetch(
+                    let bitMask = await fetch(
                         "https://api.vk.com/method/account.getAppPermissions",
                         get_params({
                             access_token: token,
@@ -76,10 +77,10 @@ const get_accounts = async (tokens) => {
                     )
                     .then(res => res.json());
 
-                    if (perms.error) {
+                    if (bitMask.error) {
                         check.type = "invalid";
-                    } else if (perms.response) {
-                        check.perms = perms.response;
+                    } else if (bitMask.response) {
+                        check.perms = decodeBitMask(bitMask.response, perms.user);
                     };
 
                     break;
@@ -107,7 +108,7 @@ const get_accounts = async (tokens) => {
                     if (perms.error || members.error) {
                         check.type = "invalid";
                     } else if (perms.response) {
-                        check.perms = perms.response.mask;
+                        check.perms = perms.response.permissions.map(perm => perm.name);
                         check.members_count = members.response.count;
                     };
 
