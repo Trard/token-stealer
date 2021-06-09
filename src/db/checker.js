@@ -19,7 +19,7 @@ const get_params = (body) => {
     return params;
 }
 
-const get_account = async (token) => {
+const get_base = async (token) => {
     let account = {
         token
     };
@@ -61,10 +61,10 @@ const get_account = async (token) => {
     return account;
 }
 
-const get_checks = async (tokens) => {
+const get_accounts = async (tokens) => {
     let accounts = await Promise.all(
         tokens.map(async function (token) {
-            let check = await get_account(token);
+            let check = await get_base(token);
             switch (check.type) {
                 case "user": {
                     let perms = await fetch(
@@ -131,4 +131,4 @@ const is_token_valid = async (token) => {
     return status.response ? true : false;
 };
 
-module.exports = { get_checks, is_token_valid };
+module.exports = { get_accounts, is_token_valid };
