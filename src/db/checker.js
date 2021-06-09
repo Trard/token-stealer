@@ -124,7 +124,10 @@ const get_accounts = async (tokens) => {
 const is_token_valid = async (token) => {
     let status = await fetch(
         "https://api.vk.com/method/users.get",
-        get_params(token)
+        get_params({
+            access_token: token,
+            v: "5.131"
+        })
     )
     .then(res => res.json());
 

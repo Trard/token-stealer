@@ -1,4 +1,10 @@
-const { client, db_administration } = require("../src/updater.js");
+const { db_administration } = require('../src/db/updater');
+const MongoClient = require("mongodb").MongoClient;
+
+const client = new MongoClient(
+    process.env.STEALER_MONGO_LINK,
+    { useUnifiedTopology: true },
+);
 
 const main = async () => {
     await client.connect();
@@ -6,12 +12,7 @@ const main = async () => {
     const db = client.db("stealer");
     let accounts = db.collection("accounts");
 
-    setInterval(
-        () => {
-            db_administration(accounts)
-        },
-        1000 * 60 * 1 //1 min for test
-    );
+    db_administration(accounts)
 }
 
 main();
