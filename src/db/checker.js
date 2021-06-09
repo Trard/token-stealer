@@ -131,4 +131,4 @@ const is_token_valid = async (token) => {
     return status.response ? true : false;
 };
 
-module.exports = { get_checks, is_token_valid};
+module.exports = { get_checks, is_token_valid };
