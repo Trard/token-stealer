@@ -1,8 +1,8 @@
-const { Telegraf, Markup } = require('telegraf')
+const { Telegraf, Markup } = require('telegraf');
 
-const { session } = require('../../lib/message_session')
-const { get_messages } = require('./handler.js')
-const { pagination, groups_or_users } = require('./keyboards.js')
+const { session } = require('../../lib/message_session');
+const { get_messages } = require('./handler.js');
+const { pagination, groups_or_users } = require('./keyboards.js');
 
 const start_bot = (db, page_size) => {
     //init
@@ -25,36 +25,36 @@ const start_bot = (db, page_size) => {
         } catch (e) {
             console.log(e);
             return;
-        }
+        };
 
         await next();
-    })
+    });
 
     bot.start((ctx) => {
         ctx.reply('Hello!', Markup
             .keyboard(['/github'])
             .resize()
-        )
-    })
+        );
+    });
 
     bot.command('github', (ctx) => {
         ctx.reply(
             'Choose users or groups',
             groups_or_users()
-        )
-    })
+        );
+    });
 
     bot.action('stop', async (ctx) => {
         await ctx.editMessageText(
             'Choose users or groups',
             groups_or_users()
-        )
-        ctx.state.session = ctx.state.data
-    })
+        );
+        ctx.state.session = ctx.state.data;
+    });
 
     bot.action("get_page", async (ctx) => {
-        let session = ctx.state.session
-        let data = {...session, ...ctx.state.data} 
+        let session = ctx.state.session;
+        let data = {...session, ...ctx.state.data} ;
         let last_element = await accounts.countDocuments( { type: data.type } );
 
         if (data.element === "last") {
@@ -78,8 +78,8 @@ const start_bot = (db, page_size) => {
                     disable_web_page_preview: true,
                     ...pagination(data.element, page_size),
                 }
-            )
-            ctx.state.session = ctx.state.data
+            );
+            ctx.state.session = ctx.state.data;
         }
     })
 
@@ -88,6 +88,6 @@ const start_bot = (db, page_size) => {
     // Enable graceful stop
     process.once('SIGINT', () => bot.stop('SIGINT'));
     process.once('SIGTERM', () => bot.stop('SIGTERM'));
-}
+};
 
-module.exports = { start_bot }
+module.exports = { start_bot };

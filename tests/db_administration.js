@@ -12,7 +12,7 @@ const main = async () => {
     const db = client.db("stealer");
     let accounts = db.collection("accounts");
 
-    db_administration(accounts)
+    db_administration(accounts);
 }
 
 main();

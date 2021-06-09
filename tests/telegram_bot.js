@@ -1,4 +1,4 @@
-const { start_bot } = require('../src/bot/bot.js')
+const { start_bot } = require('../src/bot/bot.js');
 const MongoClient = require("mongodb").MongoClient;
 
 const client = new MongoClient(

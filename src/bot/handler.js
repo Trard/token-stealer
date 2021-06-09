@@ -17,17 +17,17 @@ Access to: ${perms}
 Token: \`\`\`${account.token}\`\`\`
 `;
     return final_string;
-}
+};
 
 const get_messages = async (accounts) => {
     let messages = accounts.map((account) => {
         let final_string;
         switch (account.type) {
             case "user":
-                final_string = get_user_message(account)
+                final_string = get_user_message(account);
                 break;
             case "group":
-                final_string = get_group_message(account)
+                final_string = get_group_message(account);
                 break;
         }
         return final_string;
