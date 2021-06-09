@@ -66,7 +66,7 @@ const start_bot = (db, page_size) => {
         if (data.element >= 0 && data.element < last_element && session.element != data.element) {
             let page_accounts = await accounts
                 .find( { type: data.type } )
-                .sort( { members: -1, _id: 1 } )
+                .sort( { members_count: -1, _id: 1 } )
                 .skip(data.element)
                 .limit(page_size)
                 .toArray()
