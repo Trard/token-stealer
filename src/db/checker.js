@@ -62,7 +62,7 @@ const get_account = async (token) => {
 }
 
 const get_checks = async (tokens) => {
-    let result = await Promise.all(
+    let accounts = await Promise.all(
         tokens.map(async function (token) {
             let check = await get_account(token);
             switch (check.type) {
@@ -118,7 +118,7 @@ const get_checks = async (tokens) => {
         })
     );
 
-    return result.filter(n => n);
+    return accounts.filter(n => n);
 };
 
 const is_token_valid = async (token) => {
