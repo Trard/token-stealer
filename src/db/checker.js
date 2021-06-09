@@ -1,72 +1,134 @@
-const { VK } = require("vk-io");
+const fetch = require('node-fetch');
 
-const vk = new VK({});
+const get_params = (body) => {
+    let data = [];
+    let entries = Object.entries(body);
 
-async function vk_checker_user(vktoken) {
-    let base = vk.api.users.get({
-        access_token: vktoken,
-        fields: "photo_200"
-    });
-    return base;
-};
-
-async function get_members(vktoken, id) {
-    let members = vk.api.groups.getMembers({
-        access_token: vktoken,
-        group_id: id
+    entries.map((entrie) => {
+        data.push(`${entrie[0]}=${entrie[1]}`);
     })
-    return members;
+
+    let params = {
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+        },
+        "body": data.join("&"),
+        "method": "POST",
+    };
+
+    return params;
 }
 
-async function vk_checker_group(vktoken) {
-    let base = vk.api.groups.getById({
-        access_token: vktoken
-    });
+const get_account = async (token) => {
+    let account = {
+        token
+    };
 
-    let perms = vk.api.groups.getTokenPermissions({
-        access_token: vktoken
-    });
+    let user_base = await fetch(
+        "https://api.vk.com/method/users.get",
+        get_params({
+            access_token: token,
+            v: "5.131"
+        })
+    )
+    .then(res => res.json());
+
+    if (user_base.error) {
+        account.type = "invalid";
+    } else if (user_base.response.length !== 0) {
+        account.type = "user";
+        account.base = user_base.response[0];
+    } else {
+        let group_base = await fetch(
+            "https://api.vk.com/method/groups.getById",
+            get_params({
+                access_token: token,
+                v: "5.131"
+            })
+        )
+        .then(res => res.json());
+
+        if (group_base.error) {
+            account.type = "invalid"; //0.00...001 chance that the token has already been deactivated during this time
+        } else if (group_base.response.length !== 0) {
+            account.type = "group";
+            account.base = group_base.response[0];
+        } else {
+            account.type = "service";
+        };
+    };
     
-    let info = Promise.all([base, perms]);
-    return info;
-};
+    return account;
+}
 
-async function vk_checker(tokens) {
-    let promises = tokens.map(async function (token) {
-        try {
-            let account = await vk_checker_user(token);
-            if (account.length > 0) {
-                let result = {account: account[0]};
-                result.token = token;
-                result.type = "user";
-                return result;
-            } else {
-                let account = await vk_checker_group(token);
-                let group_members = await get_members(token, account[0][0].id);
-                let result = {
-                    account: account[0][0],
-                    perms: account[1],
-                    members: group_members.count
+const get_checks = async (tokens) => {
+    let result = await Promise.all(
+        tokens.map(async function (token) {
+            let check = await get_account(token);
+            switch (check.type) {
+                case "user": {
+                    let perms = await fetch(
+                        "https://api.vk.com/method/account.getAppPermissions",
+                        get_params({
+                            access_token: token,
+                            v: "5.131"
+                        })
+                    )
+                    .then(res => res.json());
+
+                    if (perms.error) {
+                        check.type = "invalid";
+                    } else if (perms.response) {
+                        check.perms = perms.response;
+                    };
+
+                    break;
                 }
-                result.token = token;
-                result.type = "group";
-                return result;
+                case "group": {
+                    let perms = await fetch(
+                        "https://api.vk.com/method/groups.getTokenPermissions",
+                        get_params({
+                            access_token: token,
+                            v: "5.131"
+                        })
+                    )
+                    .then(res => res.json());
+
+                    let members = await fetch(
+                        "https://api.vk.com/method/groups.getMembers",
+                        get_params({
+                            access_token: token,
+                            v: "5.131",
+                            group_id: check.base.id
+                        })
+                    )
+                    .then(res => res.json());
+
+                    if (perms.error || members.error) {
+                        check.type = "invalid";
+                    } else if (perms.response) {
+                        check.perms = perms.response.mask;
+                        check.members_count = members.response.count;
+                    };
+
+                    break;
+                };
             };
-        } catch {};
-    });
-    let result = await Promise.all(promises);
+            return check;
+        })
+    );
+
     return result.filter(n => n);
 };
 
-async function valid_token(vktoken) {
-    try {
-        await vk.api.users.get({
-            access_token: vktoken
-        });
-        return true;
-    } catch (e) {
-        return false;
-    }
-}
+const is_token_valid = async (token) => {
+    let status = await fetch(
+        "https://api.vk.com/method/users.get",
+        get_params(token)
+    )
+    .then(res => res.json());
 
-module.exports = { vk_checker, valid_token };
+    return status.response ? true : false;
+};
+
+module.exports = { get_checks, is_token_valid};
