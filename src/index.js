@@ -16,16 +16,23 @@ const main = async () => {
     const db = client.db("stealer");
     let accounts = db.collection("accounts");
     let logs = db.collection("logs");
-
-    db_administration(accounts) //first run
+    //first run
+    db_administration(accounts)
+        .then(console.log('administrating db')) 
+    cache(accounts)
+        .then(console.log('caching local db'));
+    
     setInterval( //nexts
         () => {
-            db_administration(accounts);
+            db_administration(accounts)
+                .then(console.log('administrating db'));
+            cache(accounts)
+                .then(console.log('caching local db'));
         },
         1000 * 60 * 30 //30 min
     );
 
-    cache(accounts).then(console.log('cache'));
+    
     start_bot(logs, page_size);
 }
 

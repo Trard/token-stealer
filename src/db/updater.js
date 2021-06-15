@@ -45,8 +45,8 @@ const db_clear = async (collection) => {
 };
 
 const db_administration = async (collection) => {
-    db_update(collection).then(console.log("update db"));
-    db_clear(collection).then(console.log("clear db"));
+    db_update(collection);
+    db_clear(collection);
 };
 
 module.exports = { db_administration };
