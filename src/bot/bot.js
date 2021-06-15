@@ -1,7 +1,7 @@
 const { Telegraf, Markup } = require('telegraf');
 
 const { session } = require('../../lib/message_session');
-const { get_messages } = require('./handler.js');
+const { get_messages } = require('../db/handler.js'); // ! moved
 const { pagination, groups_or_users } = require('./keyboards.js');
 
 const start_bot = (db, page_size) => {
