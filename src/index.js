@@ -24,11 +24,11 @@ const main = async () => {
     let accounts = db.collection("accounts");
     let logs = db.collection("logs");
     //first run
-    db_procces();
+    db_procces(accounts);
     
     setInterval( //nexts
         db_procces,
-        1000 * 60 * 1, //30 min
+        1000 * 60 * 30, //30 min
         accounts
     );
 
