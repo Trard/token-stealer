@@ -54,7 +54,7 @@ const start_bot = (db, page_size) => {
 
     bot.action("get_page", async (ctx) => {
         let session = ctx.state.session;
-        let data = {...session, ...ctx.state.data} ;
+        let data = {...session, ...ctx.state.data};
         let last_element = await accounts.countDocuments( { type: data.type } );
 
         if (data.element === "last") {
@@ -79,9 +79,9 @@ const start_bot = (db, page_size) => {
                     ...pagination(data.element, page_size),
                 }
             );
-            ctx.state.session = ctx.state.data;
         }
-    })
+        ctx.state.session = data;
+    });
 
     bot.launch();
 
