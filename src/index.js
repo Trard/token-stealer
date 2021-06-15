@@ -8,6 +8,13 @@ const client = new MongoClient(
     { useUnifiedTopology: true },
 );
 
+const db_procces = async (accounts) => {
+    db_administration(accounts)
+        .then(console.log('administrating db'));
+    cache(accounts)
+        .then(console.log('caching local db'));
+};
+
 const main = async () => {
     await client.connect();
 
@@ -17,19 +24,12 @@ const main = async () => {
     let accounts = db.collection("accounts");
     let logs = db.collection("logs");
     //first run
-    db_administration(accounts)
-        .then(console.log('administrating db')) 
-    cache(accounts)
-        .then(console.log('caching local db'));
+    db_procces();
     
     setInterval( //nexts
-        () => {
-            db_administration(accounts)
-                .then(console.log('administrating db'));
-            cache(accounts)
-                .then(console.log('caching local db'));
-        },
-        1000 * 60 * 30 //30 min
+        db_procces,
+        1000 * 60 * 1, //30 min
+        accounts
     );
 
     
