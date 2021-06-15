@@ -2,9 +2,9 @@ const { Markup } = require('telegraf');
 
 const pagination = (element, page_size) => Markup.inlineKeyboard([
     Markup.button.callback('⏪', JSON.stringify({"command": "get_page", "element": 0})),
-    Markup.button.callback('◀️', JSON.stringify({"command": "get_page", "element": element-page_size})),
+    Markup.button.callback('◀️', JSON.stringify({"command": "get_page", "element": element-page_size-1})),
     Markup.button.callback('⏹', JSON.stringify({"command": "stop"})),
-    Markup.button.callback('▶️', JSON.stringify({"command": "get_page", "element": element+page_size})),
+    Markup.button.callback('▶️', JSON.stringify({"command": "get_page", "element": element+page_size+1})),
     Markup.button.callback('⏩', JSON.stringify({"command": "get_page", "element": "last"}))
 ]);
 

