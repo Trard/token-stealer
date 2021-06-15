@@ -23,13 +23,11 @@ const cache = async (db) => {
     let message_group = await get_messages(groups)
     let message_user = await get_messages(users)
 
-    //await rPush("groups", message_group)
-    //await rPush("users", message_user)
+    await client.rpush("groups", message_group)
+    await client.rpush("users", message_user)
     
-    client.lrange("groups", 0, -1, (err, items) => {
-        console.log(items)
-    })
-    
+    const a = await client.lrange("groups", 0, -1)
+    console.log(a)
 }
 
 module.exports = { cache };
