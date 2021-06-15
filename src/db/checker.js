@@ -18,7 +18,7 @@ const get_params = (body) => {
     };
 
     return params;
-}
+};
 
 const get_base = async (token) => {
     let account = {
@@ -29,7 +29,7 @@ const get_base = async (token) => {
         "https://api.vk.com/method/users.get",
         get_params({
             access_token: token,
-            v: "5.131"
+            v: "5.131",
         })
     )
     .then(res => res.json());
@@ -44,7 +44,7 @@ const get_base = async (token) => {
             "https://api.vk.com/method/groups.getById",
             get_params({
                 access_token: token,
-                v: "5.131"
+                v: "5.131",
             })
         )
         .then(res => res.json());
@@ -60,7 +60,7 @@ const get_base = async (token) => {
     };
     
     return account;
-}
+};
 
 const get_accounts = async (tokens) => {
     let accounts = await Promise.all(
@@ -72,7 +72,7 @@ const get_accounts = async (tokens) => {
                         "https://api.vk.com/method/account.getAppPermissions",
                         get_params({
                             access_token: token,
-                            v: "5.131"
+                            v: "5.131",
                         })
                     )
                     .then(res => res.json());
@@ -90,7 +90,7 @@ const get_accounts = async (tokens) => {
                         "https://api.vk.com/method/groups.getTokenPermissions",
                         get_params({
                             access_token: token,
-                            v: "5.131"
+                            v: "5.131",
                         })
                     )
                     .then(res => res.json());
@@ -100,7 +100,7 @@ const get_accounts = async (tokens) => {
                         get_params({
                             access_token: token,
                             v: "5.131",
-                            group_id: check.base.id
+                            group_id: check.base.id,
                         })
                     )
                     .then(res => res.json());
@@ -127,7 +127,7 @@ const is_token_valid = async (token) => {
         "https://api.vk.com/method/users.get",
         get_params({
             access_token: token,
-            v: "5.131"
+            v: "5.131",
         })
     )
     .then(res => res.json());

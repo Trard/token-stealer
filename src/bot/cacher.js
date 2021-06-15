@@ -34,6 +34,6 @@ const cache = async (collection) => {
         client.rpush("users", messages[0]),
         client.rpush("groups", messages[1]),
     ]);
-}
+};
 
 module.exports = { cache };

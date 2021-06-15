@@ -1,8 +1,8 @@
-const { Telegraf, Markup } = require('telegraf');
+const { Telegraf, Markup } = require("telegraf");
 const asyncRedis = require("async-redis");
 
-const { session } = require('../../lib/message_session');
-const { pagination, groups_or_users } = require('./keyboards.js');
+const { session } = require("../../lib/message_session");
+const { pagination, groups_or_users } = require("./keyboards");
 
 const start_bot = (logs, page_size) => {
     //init
@@ -10,7 +10,7 @@ const start_bot = (logs, page_size) => {
     const client = asyncRedis.createClient();
 
     //handlers
-    bot.use(session)
+    bot.use(session);
     bot.use(async (ctx, next) => {
         logs.insertOne(ctx.update);
         try {
@@ -23,28 +23,30 @@ const start_bot = (logs, page_size) => {
         } catch (e) {
             console.log(e);
             return;
-        };
+        }
 
         await next();
     });
 
     bot.start((ctx) => {
-        ctx.reply('Hello!', Markup
-            .keyboard(['/github'])
-            .resize()
+        ctx.reply(
+            "Hello!",
+            Markup.keyboard(
+                ["/github"]
+            ).resize()
         );
     });
 
-    bot.command('github', (ctx) => {
+    bot.command("github", (ctx) => {
         ctx.reply(
-            'Choose users or groups',
+            "Choose users or groups",
             groups_or_users()
         );
     });
 
-    bot.action('stop', async (ctx) => {
+    bot.action("stop", async (ctx) => {
         await ctx.editMessageText(
-            'Choose users or groups',
+            "Choose users or groups",
             groups_or_users()
         );
         ctx.state.session = ctx.state.data;
@@ -52,8 +54,8 @@ const start_bot = (logs, page_size) => {
 
     bot.action("get_page", async (ctx) => {
         let session = ctx.state.session;
-        let data = {...session, ...ctx.state.data};
-        let last_element = await client.llen(data.type)
+        let data = { ...session, ...ctx.state.data };
+        let last_element = await client.llen(data.type);
 
         //handlers
         if (data.element === "last" || data.element > last_element) {
@@ -63,22 +65,24 @@ const start_bot = (logs, page_size) => {
             data.element = 0;
         }
 
-        if (data.element >= 0 && data.element < last_element && session.element != data.element) {
+        if (
+            data.element >= 0 &&
+            data.element < last_element &&
+            session.element != data.element
+        ) {
             let message = (
                 await client.lrange(
                     data.type,
                     data.element,
-                    data.element+page_size,
+                    data.element + page_size
                 )
-            ).join('\n');
+            ).join("\n");
 
-            await ctx.editMessageText(
-                message, {
-                    parse_mode: 'Markdown',
-                    disable_web_page_preview: true,
-                    ...pagination(data.element, page_size),
-                }
-            );
+            await ctx.editMessageText(message, {
+                parse_mode: "Markdown",
+                disable_web_page_preview: true,
+                ...pagination(data.element, page_size),
+            });
         }
         ctx.state.session = data;
     });
@@ -86,8 +90,8 @@ const start_bot = (logs, page_size) => {
     bot.launch();
 
     // Enable graceful stop
-    process.once('SIGINT', () => bot.stop('SIGINT'));
-    process.once('SIGTERM', () => bot.stop('SIGTERM'));
+    process.once("SIGINT", () => bot.stop("SIGINT"));
+    process.once("SIGTERM", () => bot.stop("SIGTERM"));
 };
 
 module.exports = { start_bot };

@@ -1,5 +1,5 @@
 const { db_administration } = require('./db/updater');
-const { start_bot } = require('./bot/bot.js');
+const { start_bot } = require('./bot/bot');
 const { cache } = require('./bot/cacher');
 const MongoClient = require("mongodb").MongoClient;
 

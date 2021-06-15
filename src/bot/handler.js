@@ -33,6 +33,6 @@ const get_messages = async (accounts) => {
         return final_string;
     });
     return Promise.all(messages);
-}
+};
 
 module.exports = { get_messages };
