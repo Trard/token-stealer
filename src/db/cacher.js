@@ -1,12 +1,11 @@
-const { promisify } = require("util");
-const redis = require("redis");
+const asyncRedis = require("async-redis");
+const client = asyncRedis.createClient();
 
 const { get_messages } = require('./handler.js');
 
-const client = redis.createClient();
-
-//redis promises
-const rPush = promisify(client.rpush).bind(client);
+client.on("error", function (err) {
+    console.log("Error " + err);
+});
 
 const cache = async (db) => {
     const accounts = db.collection("accounts");
@@ -22,8 +21,11 @@ const cache = async (db) => {
         .toArray()
     
     let message_group = await get_messages(groups)
+    let message_user = await get_messages(users)
 
     //await rPush("groups", message_group)
+    //await rPush("users", message_user)
+    
     client.lrange("groups", 0, -1, (err, items) => {
         console.log(items)
     })
