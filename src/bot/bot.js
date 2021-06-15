@@ -1,15 +1,13 @@
 const { Telegraf, Markup } = require('telegraf');
+const asyncRedis = require("async-redis");
 
 const { session } = require('../../lib/message_session');
-const { get_messages } = require('../db/handler.js'); // ! moved
 const { pagination, groups_or_users } = require('./keyboards.js');
 
-const start_bot = (db, page_size) => {
+const start_bot = (logs, page_size) => {
     //init
     const bot = new Telegraf(process.env.STEALER_TELEGRAM_TOKEN);
-    //db
-    const accounts = db.collection("accounts");
-    const logs = db.collection("logs");
+    const client = asyncRedis.createClient();
 
     //handlers
     bot.use(session)
@@ -55,8 +53,8 @@ const start_bot = (db, page_size) => {
     bot.action("get_page", async (ctx) => {
         let session = ctx.state.session;
         let data = {...session, ...ctx.state.data};
-        let last_element = await accounts.countDocuments( { type: data.type } );
-
+        let last_element = await client.llen(data.type)
+        
         if (data.element === "last") {
             data.element = last_element - page_size;
         } else if (data.element < 0) {
@@ -64,13 +62,13 @@ const start_bot = (db, page_size) => {
         }
 
         if (data.element >= 0 && data.element < last_element && session.element != data.element) {
-            let page_accounts = await accounts
-                .find( { type: data.type } )
-                .sort( { members_count: -1, _id: 1 } )
-                .skip(data.element)
-                .limit(page_size)
-                .toArray()
-            let message = ( await get_messages(page_accounts) ).join('\n');
+            let message = (
+                await client.lrange(
+                    data.type,
+                    data.element,
+                    data.element+page_size,
+                )
+            ).join('\n');
 
             await ctx.editMessageText(
                 message, {

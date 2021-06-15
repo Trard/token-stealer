@@ -1,4 +1,4 @@
-const { cache } = require('../src/db/cacher');
+const { cache } = require('../src/bot/cacher');
 
 const MongoClient = require("mongodb").MongoClient;
 
@@ -15,7 +15,7 @@ const main = async () => {
     const db = client.db("stealer");
     let accounts = db.collection("accounts");
 
-    cache(db)
+    cache(accounts)
 }
 
 main()
