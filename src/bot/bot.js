@@ -55,12 +55,14 @@ const start_bot = (logs, page_size) => {
         let data = {...session, ...ctx.state.data};
         let last_element = await client.llen(data.type)
 
-        if (data.element === "last") {
-            data.element = last_element - page_size;
-        } else if (data.element < 0) {
+        //handlers
+        if (data.element === "last" || data.element > last_element) {
+            data.element = last_element - page_size - 1;
+        }
+        if (data.element < 0) {
             data.element = 0;
         }
-        
+
         if (data.element >= 0 && data.element < last_element && session.element != data.element) {
             let message = (
                 await client.lrange(
