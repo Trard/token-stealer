@@ -8,6 +8,35 @@
     "vk-bit-masks-decoder": "^1.1.4"
   },
   "scripts": {
-    "start": "node --unhandled-rejections=strict src/index.js"
-  }
+    "start": "node --unhandled-rejections=strict src/index.js",
+    "test": "node tests/index.js"
+  },
+  "name": "token-stealer",
+  "description": "Bot to steal tokens from github",
+  "version": "3.7.0",
+  "main": "src/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests",
+    "src": "src"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Trard/token-stealer-bot.git"
+  },
+  "keywords": [
+    "stealer",
+    "token",
+    "tokens",
+    "bot",
+    "telegram",
+    "vk"
+  ],
+  "author": "Trard",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Trard/token-stealer-bot/issues"
+  },
+  "homepage": "https://github.com/Trard/token-stealer-bot#readme"
 }
