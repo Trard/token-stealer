@@ -1,4 +1,6 @@
 # Stealer
+[![Licence](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Trard/token-stealer-bot/blob/master/LICENSE)
+
 Bot to steal tokens from github.
 
 ## Disclaimer
