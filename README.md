@@ -1,4 +1,4 @@
-# Token Stealer bot
+# Token Stealer
 [![Licence](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Trard/token-stealer-bot/blob/master/LICENSE)
 [![Stars](https://img.shields.io/github/stars/Trard/token-stealer-bot?style=social)](https://github.com/Trard/token-stealer-bot/stargazers)
 
