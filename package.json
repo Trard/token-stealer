@@ -8,8 +8,7 @@
     "vk-bit-masks-decoder": "^1.1.4"
   },
   "scripts": {
-    "start": "node --unhandled-rejections=strict src/index.js",
-    "test": "node tests/index.js"
+    "start": "node --unhandled-rejections=strict src/index.js"
   },
   "name": "token-stealer",
   "description": "Bot to steal tokens from github",
