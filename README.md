@@ -1,7 +1,9 @@
 # Stealer
+Bot to steal tokens from github.
 
-Bot for informational purposes only  
-Bot to steal tokens from github
+## Disclaimer
+Bot for informational purposes only.
+I am not responsible for any damage caused by the bot inside my repository.
 
 ## Installation
 > **[Node.js](https://nodejs.org/) is required**  
@@ -12,10 +14,10 @@ Bot to steal tokens from github
 git clone https://github.com/Trard/stealer.git
 ```
 
-- ### Add environment variables:
-  - GITHUB_TOKEN="token from github"
-  - STEALER_TELEGRAM_TOKEN="token from telegram bot"
-  - MONGO_STEALER_LINK="link mongodb"
+### Add environment variables:
+- GITHUB_TOKEN="token from github"
+- STEALER_TELEGRAM_TOKEN="token from telegram bot"
+- MONGO_STEALER_LINK="link mongodb"
 
 ### Install dependencies:
 ```
