@@ -23,7 +23,7 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Trard/token-stealer-bot.git"
+    "url": "git+https://github.com/Trard/token-stealer.git"
   },
   "keywords": [
     "stealer",
@@ -36,7 +36,7 @@
   "author": "Trard",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Trard/token-stealer-bot/issues"
+    "url": "https://github.com/Trard/token-stealer/issues"
   },
-  "homepage": "https://github.com/Trard/token-stealer-bot#readme"
+  "homepage": "https://github.com/Trard/token-stealer#readme"
 }
